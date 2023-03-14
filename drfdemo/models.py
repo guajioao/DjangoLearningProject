@@ -12,3 +12,6 @@ class Student(models.Model):
         db_table="tb_student"
         # verbose_name = "学生"
         # verbose_name_plural = verbose_name
+
+    # def names(self):
+    #     return self.name
