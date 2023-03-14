@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from drfdemo.models import Student
+from drfdemo.models import Student,Publish,Author
 
 class StudentSerializer(serializers.Serializer):
     # source指model里的变量名，names指url里的名字
@@ -27,4 +27,15 @@ class StuModelSerializer(serializers.ModelSerializer):
         # fields = ['name', 'sex', 'age']
         # fields = "__all__"
         exclude = ['name']# 自己写了names之后，记得把name排除掉
+
+class PublishSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Publish
+        fields = "__all__"
+
+class AuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Author
+        fields = "__all__"
+
 

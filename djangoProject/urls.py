@@ -16,18 +16,23 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,re_path
 
-from app01 import views
-from drfdemo.views import LoginView,StudentView,StudentDetailView,StuModelView
+# from app01 import views
+from drfdemo import views
+from drfdemo.views import LoginView,StudentView,StuModelView
 
 urlpatterns = [
-    # path('admin/', admin.site.urls),
-    path('index/', views.index),
-    path('userAdd/', views.userAdd),
-    path('tpl/', views.tpl),
-    path('orm/',views.orm),
-    path('login/',LoginView.as_view()),
-    path('student/',StudentView.as_view()),
-    path('studentM/<int:id>/',StuModelView.as_view()),
-    re_path('student/(\d+)/',StudentDetailView.as_view())
+    path('admin/', admin.site.urls),
+    # path('index/', views.index),
+    # path('userAdd/', views.userAdd),
+    # path('tpl/', views.tpl),
+    # path('orm/',views.orm),
+    # path('login/',LoginView.as_view()),
+    path('drfdemo/student/',StudentView.as_view()),
+    re_path('drfdemo/student/(\d+)/',views.StudentDetailView.as_view()),
+    path('drfdemo/student/<int:id>/',StuModelView.as_view()),
+    path('drfdemo/publish/',views.PublishView.as_view()),
+    re_path('drfdemo/publish/(?P<pk>\d+)/',views.PublishDetailView.as_view()),
+    path('drfdemo/author/',views.AuthorView.as_view()),
+    re_path('drfdemo/author/(?P<pk>\d+)/',views.AuthorDetailView.as_view())
 ]
 
