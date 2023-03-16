@@ -20,19 +20,33 @@ from django.urls import path,re_path
 from drfdemo import views
 from drfdemo.views import LoginView,StudentView,StuModelView
 
+from rest_framework import routers
+router = routers.DefaultRouter()
+router.register('drfdemo/publish', views.PublishView)
+router.register('drfdemo/author', views.AuthorDetailView)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('index/', views.index),
-    # path('userAdd/', views.userAdd),
-    # path('tpl/', views.tpl),
     # path('orm/',views.orm),
     # path('login/',LoginView.as_view()),
-    path('drfdemo/student/',StudentView.as_view()),
-    re_path('drfdemo/student/(\d+)/',views.StudentDetailView.as_view()),
-    path('drfdemo/student/<int:id>/',StuModelView.as_view()),
-    path('drfdemo/publish/',views.PublishView.as_view()),
-    re_path('drfdemo/publish/(?P<pk>\d+)/',views.PublishDetailView.as_view()),
-    path('drfdemo/author/',views.AuthorView.as_view()),
-    re_path('drfdemo/author/(?P<pk>\d+)/',views.AuthorDetailView.as_view())
+    # path('drfdemo/student/',StudentView.as_view()),
+    # re_path('drfdemo/student/(\d+)/',views.StudentDetailView.as_view()),
+    # path('drfdemo/student/<int:id>/',StuModelView.as_view()),
+    # path('drfdemo/publish/',views.PublishView.as_view()),
+    # re_path('drfdemo/publish/(?P<pk>\d+)/',views.PublishDetailView.as_view()),
+    # path('drfdemo/author/',views.AuthorView.as_view({
+    #     "get":"list",
+    #     "post":"create"
+    # })),
+    # re_path('drfdemo/author/(?P<pk>\d+)/',views.AuthorDetailView.as_view({
+    #     "get": "retrieve",
+    #     "post": "create",
+    #     "put": "update",
+    #     "delete": "destroy"
+    # })),
+
+
 ]
+urlpatterns += router.urls
+
 

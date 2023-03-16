@@ -26,7 +26,7 @@ class LoginView(View):
         return HttpResponse("LoginView POST...")
 
 # Create your views here.
-###############基于APIView的接口实现
+###############基于APIView的接口实现###############
 class StudentView(APIView):
     def get(self,request):
         students_all = Student.objects.all()
@@ -92,8 +92,9 @@ class StuModelView(APIView):
 
 ##############################基于GenericAPIView的接口实现
 from rest_framework.generics import GenericAPIView
+from rest_framework.viewsets import GenericViewSet,ModelViewSet
 
-class PublishView(GenericAPIView):
+class PublishView(GenericViewSet):
     queryset = Publish.objects.all()
     serializer_class = PublishSerializer
 
@@ -116,9 +117,7 @@ class PublishDetailView(GenericAPIView):
     # lookup_field = 'name'
 
     def get(self,request,pk):
-        # publish_list = self.get_queryset().filter(pk=pk)
         serializer = self.get_serializer(instance=self.get_object(),many=False)
-        # serializer = self.get_serializer(instance=publish_list,many=True)
         return Response(serializer.data)
 
     def put(self,request,pk):
@@ -135,30 +134,74 @@ class PublishDetailView(GenericAPIView):
         return Response("删除")
 
 
-############################## 基于Mixin混合类的接口实现 ###############################
 from rest_framework.mixins import ListModelMixin,CreateModelMixin,UpdateModelMixin,RetrieveModelMixin,DestroyModelMixin
-class AuthorView(GenericAPIView, ListModelMixin, CreateModelMixin,):
+############################## 基于Mixin混合类的接口实现 ###############################
+# class AuthorView(GenericAPIView, ListModelMixin, CreateModelMixin,):
+#     queryset = Author.objects.all()
+#     serializer_class = AuthorSerializer
+#
+#     def get(self,request):
+#         return self.list(request)
+#
+#     def post(self,request):
+#         return self.create(request)
+#
+# class AuthorDetailView(GenericAPIView,RetrieveModelMixin,UpdateModelMixin,DestroyModelMixin):
+#     queryset = Author.objects.all()
+#     serializer_class = AuthorSerializer
+#     # lookup_field = 'name'
+#
+#     def get(self,request,pk):
+#         return self.retrieve(request)
+#
+#     def put(self,request,pk):
+#         return self.update(request)
+#
+#     def delete(self,request,pk):
+#         return self.destroy(request)
+
+from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
+############################## 基于generics的接口实现 ###############################接口简化结束
+# class AuthorView(ListCreateAPIView):
+#     queryset = Author.objects.all()
+#     serializer_class = AuthorSerializer
+#
+# class AuthorDetailView(RetrieveUpdateDestroyAPIView):
+#     queryset = Author.objects.all()
+#     serializer_class = AuthorSerializer
+    # lookup_field = 'name'
+
+from rest_framework.viewsets import ViewSet
+############################## 基于viewSet:ViewSetMixin的接口实现 ###############################
+# class AuthorView(ViewSet):
+#
+#     def get_all(self, request):
+#         return Response("查看所有")
+#
+#     def add_object(self, request):
+#         return Response("添加资源")
+#
+#     def get_object(self, request,pk):
+#         return Response("查看单一资源")
+#
+#     def update_object(self, request,pk):
+#         return Response("更新单一资源")
+#
+#     def delete_object(self, request,pk):
+#         return Response("删除资源")
+#
+# class AuthorDetailView(RetrieveUpdateDestroyAPIView):
+#     queryset = Author.objects.all()
+#     serializer_class = AuthorSerializer
+#     # lookup_field = 'name'
+
+from rest_framework.viewsets import GenericViewSet,ModelViewSet
+############################## 基于viewSet:ViewSetMixin的接口实现 ###############################
+class AuthorView(GenericViewSet,ListModelMixin,CreateModelMixin):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
 
-    def get(self,request):
-        return self.list(request)
-
-    def post(self,request):
-        return self.create(request)
-
-
-
-class AuthorDetailView(GenericAPIView,RetrieveModelMixin,UpdateModelMixin,DestroyModelMixin):
+class AuthorDetailView(ModelViewSet):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
     # lookup_field = 'name'
-
-    def get(self,request,pk):
-        return self.retrieve(request)
-
-    def put(self,request,pk):
-        return self.update(request)
-
-    def delete(self,request,pk):
-        return self.destroy(request)
